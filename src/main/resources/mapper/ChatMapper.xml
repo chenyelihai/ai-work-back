@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ai.mapper.ChatMapper">
+
+    <resultMap id="BaseResultMap" type="com.cy.ai.model.entity.Chat">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="question" column="question" jdbcType="VARCHAR"/>
+            <result property="answer" column="answer" jdbcType="VARCHAR"/>
+            <result property="userId" column="userId" jdbcType="INTEGER"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,question,answer,
+        userId,create_time
+    </sql>
+</mapper>
