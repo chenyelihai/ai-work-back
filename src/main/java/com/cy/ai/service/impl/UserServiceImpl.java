@@ -3,7 +3,9 @@ package com.cy.ai.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cy.ai.exception.ThrowUtils;
 import com.cy.ai.service.UserService;
+import com.cy.ai.utils.EncryKeyGenerator;
 import com.cy.ai.utils.SqlUtils;
 import com.cy.ai.common.ErrorCode;
 import com.cy.ai.constant.CommonConstant;
@@ -72,6 +74,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setAccessKey(EncryKeyGenerator.gen(user.getUserAccount()));
+            user.setSecretKey(EncryKeyGenerator.gen(user.getUserAccount()));
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
@@ -236,6 +240,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
+    }
+
+    @Override
+    public boolean genApiKeys(Long id, String accessKey, String secretKey) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        wrapper.eq("accessKey", accessKey);
+        wrapper.eq("secretKey", secretKey);
+        User user = baseMapper.selectOne(wrapper);
+        ThrowUtils.throwIf(user == null , ErrorCode.NOT_FOUND_ERROR, "accessKey或者secretKey已过期");
+
+        user.setAccessKey(EncryKeyGenerator.gen(user.getUserAccount()));
+        user.setSecretKey(EncryKeyGenerator.gen(user.getUserAccount()));
+        int i = baseMapper.updateById(user);
+        return i > 0;
     }
 
 }

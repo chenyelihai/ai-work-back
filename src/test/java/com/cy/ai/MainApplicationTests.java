@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.handler.annotation.Header;
 
 import static com.cy.ai.constant.CommonConstant.BI_MODEL_ID;
+import static com.cy.ai.constant.CommonConstant.CHAT_ID;
 
 /**
  * 主类测试
@@ -33,7 +34,7 @@ class MainApplicationTests {
 
     @Test
     void contextLoads() {
-        String s = aiManager.doChat(BI_MODEL_ID, "测试");
+        String s = aiManager.doChat(CHAT_ID, "能不能回答我");
         System.out.println(s);
     }
 

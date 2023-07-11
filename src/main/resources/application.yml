@@ -64,3 +64,12 @@ yuapi:
   client:
     access-key: hmf0ju7embjvr1m4f3rp856n00zk9lcc
     secret-key: qfmtgispiwlu5vkfghl80tzmsphyr0d0
+dubbo:
+  application:
+    name: back-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://120.46.211.67:8848

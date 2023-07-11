@@ -21,6 +21,8 @@ public interface CommonConstant {
 
     long CHAT_ID = 1676422538588139522L;
 
+    String SALT = "chenye";
+
 
 
     
